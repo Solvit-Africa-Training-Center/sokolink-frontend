@@ -7,6 +7,8 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/Forgotpassword'; // ✅ import new page
 import About  from './pages/About'; 
 import Contact from './pages/Contact';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Overview from './pages/admin/Overview';
 
 const App: React.FC = () => {
   return (
@@ -19,7 +21,12 @@ const App: React.FC = () => {
         <Route path='/forgotpassword' element={<ForgotPassword />} /> {/* ✅ new route */}
         <Route path='/about' element={<About />} /> {/* ✅ new route */}
         <Route path='/contact' element={<Contact />} /> {/* ✅ new route */}
+        <Route path='admin' element={<AdminDashboard />}>
+          <Route index element={<Overview />} />
+          
+        </Route>
       </Routes>
+     
     </Router>
   );
 };
