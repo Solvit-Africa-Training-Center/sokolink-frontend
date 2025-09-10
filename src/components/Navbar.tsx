@@ -20,7 +20,8 @@ const Navbar: React.FC = () => {
           <Link to="/contact" className="hover:text-teal-600">
             Contact
           </Link>
-          <Link to="#help" className="hover:text-teal-600">Help</Link>
+          <Link to="/help">Help</Link>
+    
         </nav>
         <div className="flex items-center gap-4">
           <button className="p-2 hover:bg-gray-100 rounded-full">
