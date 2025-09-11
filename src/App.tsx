@@ -8,7 +8,12 @@ import ForgotPassword from './pages/Forgotpassword';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Help from './pages/Help';
-import Wishlist from './pages/Wishlist';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Overview from './pages/admin/Overview';
+import Reports from './pages/admin/Reports';
+import Analytics from './pages/admin/Analytics';
+import Users from './pages/admin/Users';
+import AllUsers from './pages/admin/AllUsers';
 
 const App: React.FC = () => {
   return (
@@ -22,10 +27,21 @@ const App: React.FC = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} /> {/* ✅ Help at /help */}
-        <Route path="/wishlist" element={<Wishlist />} /> {/* ✅ Wishlist at /wishlist */}
+        <Route path='/admin' element={<AdminDashboard />} >
+          <Route index element={<Overview />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path='users' element={<Users />}>
+          <Route index element={<AllUsers />} />
+            
+          </Route>
+         
+          </Route>
+        
       </Routes>
+     
     </Router>
   );
-};
+}
 
 export default App;
