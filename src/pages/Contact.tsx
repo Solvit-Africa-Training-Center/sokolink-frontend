@@ -98,7 +98,7 @@ const Contact: React.FC = () => {
       <Navbar />
 
       {/* Header Section */}
-      <div className="bg-gradient-to-b from-gray-100 to-white py-20 text-center">
+      <div className="text-center py-16 px-4 bg-[#eaf4f3]">
         <h1 className="text-4xl font-bold text-teal-600 md:text-5xl">
           Get in Touch
         </h1>

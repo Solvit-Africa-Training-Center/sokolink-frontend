@@ -134,11 +134,17 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gray-100 p-4'>
+    <div className='flex min-h-screen items-center justify-center bg-[#eaf4f3] p-4'>
       <div className='w-full max-w-2xl rounded-xl bg-white p-8 shadow-lg'>
         <div className='mb-6 flex flex-col items-center justify-center'>
-           <div className="flex items-center">
-  <img src={Logo} alt="SokoLink Logo" className="h-10 w-auto" />
+          <div className="flex items-center">
+  <Link to="/">
+    <img 
+      src={Logo} 
+      alt="SokoLink Logo" 
+      className="h-10 w-auto cursor-pointer" 
+    />
+  </Link>
 </div>
 
           

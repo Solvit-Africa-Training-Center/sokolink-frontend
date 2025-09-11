@@ -45,7 +45,7 @@ const HelpPage: React.FC = () => {
     <div className="bg-gray-50 min-h-screen flex flex-col">
         <Navbar />
       {/* Heading */}
-      <div className="text-center py-12 bg-teal-50">
+      <div className="text-center py-16 px-4 bg-[#eaf4f3]">
         <h1 className="text-3xl font-semibold">
           How can we <span className="text-teal-500">help you ?</span>
         </h1>

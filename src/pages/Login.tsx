@@ -59,12 +59,18 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gray-100 p-4'>
+    <div className='flex min-h-screen items-center justify-center bg-[#eaf4f3] p-4'>
       <div className='w-full max-w-lg rounded-xl bg-white p-8 shadow-lg'>
         <div className='mb-6 flex flex-col items-center justify-center'>
           <div className="flex justify-center items-center mb-2">
             <div className="flex items-center">
-  <img src={Logo} alt="SokoLink Logo" className="h-10 w-auto" />
+  <Link to="/">
+    <img 
+      src={Logo} 
+      alt="SokoLink Logo" 
+      className="h-10 w-auto cursor-pointer" 
+    />
+  </Link>
 </div>
           </div>
           <h1 className='mt-4 text-3xl font-bold'>Welcome Back</h1>
@@ -112,9 +118,10 @@ const Login: React.FC = () => {
               }`}
             >
               <option value='' disabled>Select Role</option>
-              <option value='Customer'>Customer</option>
+              
               <option value='Retailer'>Retailer</option>
               <option value='Wholesaler'>Wholesaler</option>
+              <option value='Admin'>Admin</option>
             </select>
             {errors.role && (
               <p className='mt-1 text-xs text-red-500'>{errors.role}</p>
