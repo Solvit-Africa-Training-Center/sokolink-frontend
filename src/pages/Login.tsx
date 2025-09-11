@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import googleLogo from "../assets/googlelogo.png";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -54,7 +55,12 @@ const Login: React.FC = () => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Login data:', formData);
-      alert('Login successful!');
+
+      if (formData.role === "Admin") {
+        navigate("/admin"); // ✅ Only Admin goes to dashboard
+      } else {
+        setErrors((prev) => ({ ...prev, role: "Only Admin can log in." }));
+      }
     }
   };
 
@@ -64,14 +70,14 @@ const Login: React.FC = () => {
         <div className='mb-6 flex flex-col items-center justify-center'>
           <div className="flex justify-center items-center mb-2">
             <div className="flex items-center">
-  <Link to="/">
-    <img 
-      src={Logo} 
-      alt="SokoLink Logo" 
-      className="h-10 w-auto cursor-pointer" 
-    />
-  </Link>
-</div>
+              <Link to="/">
+                <img 
+                  src={Logo} 
+                  alt="SokoLink Logo" 
+                  className="h-10 w-auto cursor-pointer" 
+                />
+              </Link>
+            </div>
           </div>
           <h1 className='mt-4 text-3xl font-bold'>Welcome Back</h1>
           <p className='mt-1 text-center text-sm text-gray-500'>
@@ -118,7 +124,6 @@ const Login: React.FC = () => {
               }`}
             >
               <option value='' disabled>Select Role</option>
-              
               <option value='Retailer'>Retailer</option>
               <option value='Wholesaler'>Wholesaler</option>
               <option value='Admin'>Admin</option>
@@ -174,11 +179,11 @@ const Login: React.FC = () => {
             </div>
             <div className='text-sm'>
               <Link
-              to="/forgotpassword"
-              className="text-sm text-teal-600 hover:text-teal-800"
-            >
-              Forgot Password?
-            </Link>
+                to="/forgotpassword"
+                className="text-sm text-teal-600 hover:text-teal-800"
+              >
+                Forgot Password?
+              </Link>
             </div>
           </div>
 
@@ -206,12 +211,12 @@ const Login: React.FC = () => {
           <div className='h-px w-full bg-gray-300'></div>
         </div>
 
-          <button
-      className="w-full flex items-center justify-center gap-3 rounded-md border border-gray-300 bg-[#f5f4ef] px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-    >
-      <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
-       Google
-    </button>
+        <button
+          className="w-full flex items-center justify-center gap-3 rounded-md border border-gray-300 bg-[#f5f4ef] px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+        >
+          <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
+          Google
+        </button>
       </div>
     </div>
   );

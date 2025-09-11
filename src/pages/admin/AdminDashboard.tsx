@@ -11,16 +11,30 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Outlet, Link } from "react-router-dom";
-import Logo from "../../assets/logo.svg"
+import { Outlet, Link, useNavigate } from "react-router-dom"; // ✅ added useNavigate
+import Logo from "../../assets/logo.svg";
 
 function AdminDashboard() {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isSidebarOpen, setIsSideBarOpen] = useState(true);
-  const [profileUrl] = useState('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D')
+  const [profileUrl] = useState(
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+  );
   const [isnewNotification, setIsNewNotification] = useState(true);
   const [isNotificationOpn, setIsNotificationOpen] = useState(false);
+
+  const navigate = useNavigate(); // ✅ hook for navigation
+
+  const handleLogout = () => {
+    // Clear user token or session info
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedOutMessage"); // if you had such a key
+    sessionStorage.clear(); // clear any session storage too
+
+    // Redirect to login page and replace history
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="flex bg-[#e1f1f1]">
@@ -80,13 +94,11 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Dropdown menus with animation */}
+                {/* Dropdown menus */}
                 <div
-                  className={`
-                  ml-5 flex flex-col gap-1 mt-1 overflow-hidden
-                  transition-all duration-300 ease-in-out
-                  ${isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}
-                `}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                    isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
+                  }`}
                 >
                   <Link
                     to="users"
@@ -126,16 +138,11 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Dropdown menus with animation */}
+                {/* Dropdown menus */}
                 <div
-                  className={`
-                  ml-5 flex flex-col gap-1 mt-1 overflow-hidden
-                  transition-all duration-300 ease-in-out
-                  ${isProductsOpen
-                      ? "max-h-32 opacity-100"
-                      : "max-h-0 opacity-0"
-                    }
-                `}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                    isProductsOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
+                  }`}
                 >
                   <Link
                     to=""
@@ -160,13 +167,15 @@ function AdminDashboard() {
             </div>
           )}
         </div>
-        <Link
-          to="/admin"
-          className="flex gap-3 p-2 items-center rounded-[8px] text-[#FF6F61]"
-        >
-          <LogOutIcon size={20} />
-          <span>Logout</span>
-        </Link>
+
+        {/* ✅ Logout button now navigates */}
+       <button
+      onClick={handleLogout}
+      className="flex gap-3 p-2 items-center rounded-[8px] text-[#FF6F61] hover:bg-gray-100 transition-colors duration-200"
+    >
+      <LogOutIcon size={20} />
+      <span>Logout</span>
+    </button>
       </div>
 
       {/* Main Content */}
@@ -180,27 +189,36 @@ function AdminDashboard() {
 
           {/* Right side */}
           <div className="flex gap-[18px] items-center justify-center">
-            <div className="relative cursor-pointer" onClick={() => {
-              setIsNotificationOpen(!isNotificationOpn)
-            
-            }}>
+            <div
+              className="relative cursor-pointer"
+              onClick={() => {
+                setIsNotificationOpen(!isNotificationOpn);
+              }}
+            >
               <BellIcon />
-              {isnewNotification && (<span className="h-[12px] w-[12px] bg-[#EB2A2A] rounded-full absolute bottom-0 right-[-3px] top-[-2px]"></span>)}
-              {/* Notifications */}
-              {isNotificationOpn && <div className="p-2 bg-white border border-gray-200 rounded-md shadow-md absolute top-[50px] right-0 w-[300px] z-10">
-                <div className="flex items-center flex-col justify-between p-2">
-                  <span className="font-bold">Notifications</span>
-                  <span className="text-[#008994]">See all</span>
+              {isnewNotification && (
+                <span className="h-[12px] w-[12px] bg-[#EB2A2A] rounded-full absolute bottom-0 right-[-3px] top-[-2px]"></span>
+              )}
+              {isNotificationOpn && (
+                <div className="p-2 bg-white border border-gray-200 rounded-md shadow-md absolute top-[50px] right-0 w-[300px] z-10">
+                  <div className="flex items-center flex-col justify-between p-2">
+                    <span className="font-bold">Notifications</span>
+                    <span className="text-[#008994]">See all</span>
+                  </div>
                 </div>
-
-              </div>}
+              )}
             </div>
-            {isSidebarOpen && <Link to='' className="relative cursor-pointer">
-              <img src={profileUrl} className="h-8 w-8 rounded-full object-cover right-0" alt="" />
-              {/* Active state */}
-              <span className="h-[12px] w-[12px] bg-[#08DA24] rounded-full absolute bottom-0 right-[-6px] top-[5px]"></span>
-            </Link>}
-         </div>
+            {isSidebarOpen && (
+              <Link to="" className="relative cursor-pointer">
+                <img
+                  src={profileUrl}
+                  className="h-8 w-8 rounded-full object-cover right-0"
+                  alt=""
+                />
+                <span className="h-[12px] w-[12px] bg-[#08DA24] rounded-full absolute bottom-0 right-[-6px] top-[5px]"></span>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Main content area */}
