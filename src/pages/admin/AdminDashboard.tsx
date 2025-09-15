@@ -11,16 +11,22 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Outlet, Link } from "react-router-dom";
-import Logo from "../../assets/logo.svg"
+import { Outlet, Link, useLocation } from "react-router-dom";
+import Logo from "../../assets/logo.svg";
 
 function AdminDashboard() {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isSidebarOpen, setIsSideBarOpen] = useState(true);
-  const [profileUrl] = useState('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D')
+  const [profileUrl] = useState(
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+  );
   const [isnewNotification, setIsNewNotification] = useState(true);
   const [isNotificationOpn, setIsNotificationOpen] = useState(false);
+
+  // ✅ Track active link
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="flex bg-[#e1f1f1]">
@@ -41,23 +47,31 @@ function AdminDashboard() {
 
           {isSidebarOpen && (
             <div className="mt-10 flex flex-col gap-2">
+              {/* Dashboard */}
               <Link
                 to="/admin"
-                className="flex gap-3 p-2 bg-[#B0DADE] items-center rounded-[8px] text-[#008994]"
+                className={`flex gap-3 p-2 items-center rounded-[8px] transition-colors duration-200 
+                  ${isActive("/admin") ? "bg-[#B0DADE] text-[#008994]" : "text-gray-600 hover:bg-gray-100"}`}
               >
                 <LayoutDashboardIcon size={20} />
                 <span>Dashboard</span>
               </Link>
+
+              {/* Reports */}
               <Link
                 to="reports"
-                className="flex gap-3 p-2  items-center rounded-[8px]  text-gray-600 hover:bg-gray-100 transition-colors duration-200"
+                className={`flex gap-3 p-2 items-center rounded-[8px] transition-colors duration-200 
+                  ${isActive("/admin/reports") ? "bg-[#B0DADE] text-[#008994]" : "text-gray-600 hover:bg-gray-100"}`}
               >
                 <FileTextIcon size={20} />
                 <span>Reports</span>
               </Link>
+
+              {/* Analytics */}
               <Link
                 to="analytics"
-                className="flex gap-3 p-2  items-center rounded-[8px]  text-gray-600 hover:bg-gray-100 transition-colors duration-200 "
+                className={`flex gap-3 p-2 items-center rounded-[8px] transition-colors duration-200 
+                  ${isActive("/admin/analytics") ? "bg-[#B0DADE] text-[#008994]" : "text-gray-600 hover:bg-gray-100"}`}
               >
                 <ChartNoAxesColumnIcon size={20} />
                 <span>Analytics</span>
@@ -80,29 +94,29 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Dropdown menus with animation */}
+                {/* Dropdown menus */}
                 <div
-                  className={`
-                  ml-5 flex flex-col gap-1 mt-1 overflow-hidden
-                  transition-all duration-300 ease-in-out
-                  ${isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}
-                `}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out
+                  ${isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                   <Link
                     to="users"
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/users") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     All users
                   </Link>
                   <Link
                     to="verification"
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/verification") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     Verification Queue
                   </Link>
                   <Link
                     to="kycreview"
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/kycreview") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     KYC Review
                   </Link>
@@ -126,32 +140,29 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Dropdown menus with animation */}
+                {/* Dropdown menus */}
                 <div
-                  className={`
-                  ml-5 flex flex-col gap-1 mt-1 overflow-hidden
-                  transition-all duration-300 ease-in-out
-                  ${isProductsOpen
-                      ? "max-h-32 opacity-100"
-                      : "max-h-0 opacity-0"
-                    }
-                `}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out
+                  ${isProductsOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                   <Link
-                    to=""
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    to="products"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/products") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     All Products
                   </Link>
                   <Link
-                    to=""
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    to="categories"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/categories") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     Categories
                   </Link>
                   <Link
-                    to=""
-                    className="text-gray-700 py-1 hover:text-[#008994] transition-colors duration-200"
+                    to="inventory"
+                    className={`py-1 transition-colors duration-200
+                      ${isActive("/admin/inventory") ? "text-[#008994] font-medium" : "text-gray-700 hover:text-[#008994]"}`}
                   >
                     Inventory
                   </Link>
@@ -160,6 +171,7 @@ function AdminDashboard() {
             </div>
           )}
         </div>
+
         <Link
           to="/admin"
           className="flex gap-3 p-2 items-center rounded-[8px] text-[#FF6F61]"
@@ -180,27 +192,34 @@ function AdminDashboard() {
 
           {/* Right side */}
           <div className="flex gap-[18px] items-center justify-center">
-            <div className="relative cursor-pointer" onClick={() => {
-              setIsNotificationOpen(!isNotificationOpn)
-            
-            }}>
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setIsNotificationOpen(!isNotificationOpn)}
+            >
               <BellIcon />
-              {isnewNotification && (<span className="h-[12px] w-[12px] bg-[#EB2A2A] rounded-full absolute bottom-0 right-[-3px] top-[-2px]"></span>)}
-              {/* Notifications */}
-              {isNotificationOpn && <div className="p-2 bg-white border border-gray-200 rounded-md shadow-md absolute top-[50px] right-0 w-[300px] z-10">
-                <div className="flex items-center flex-col justify-between p-2">
-                  <span className="font-bold">Notifications</span>
-                  <span className="text-[#008994]">See all</span>
+              {isnewNotification && (
+                <span className="h-[12px] w-[12px] bg-[#EB2A2A] rounded-full absolute bottom-0 right-[-3px] top-[-2px]"></span>
+              )}
+              {isNotificationOpn && (
+                <div className="p-2 bg-white border border-gray-200 rounded-md shadow-md absolute top-[50px] right-0 w-[300px] z-10">
+                  <div className="flex items-center flex-col justify-between p-2">
+                    <span className="font-bold">Notifications</span>
+                    <span className="text-[#008994]">See all</span>
+                  </div>
                 </div>
-
-              </div>}
+              )}
             </div>
-            {isSidebarOpen && <Link to='' className="relative cursor-pointer">
-              <img src={profileUrl} className="h-8 w-8 rounded-full object-cover right-0" alt="" />
-              {/* Active state */}
-              <span className="h-[12px] w-[12px] bg-[#08DA24] rounded-full absolute bottom-0 right-[-6px] top-[5px]"></span>
-            </Link>}
-         </div>
+            {isSidebarOpen && (
+              <Link to="" className="relative cursor-pointer">
+                <img
+                  src={profileUrl}
+                  className="h-8 w-8 rounded-full object-cover right-0"
+                  alt=""
+                />
+                <span className="h-[12px] w-[12px] bg-[#08DA24] rounded-full absolute bottom-0 right-[-6px] top-[5px]"></span>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Main content area */}
