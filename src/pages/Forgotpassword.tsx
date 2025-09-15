@@ -18,12 +18,13 @@ const ForgotPassword: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8 text-center">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          <img
-            src={images[0]} // ✅ using your logo
-            alt="SokoLink Logo"
-            className="h-10 w-auto"
-          />
-          
+          <Link to="/">
+            <img
+              src={images[0]} // ✅ using your logo
+              alt="SokoLink Logo"
+              className="h-10 w-auto"
+            />
+          </Link>
         </div>
 
         {/* Title */}

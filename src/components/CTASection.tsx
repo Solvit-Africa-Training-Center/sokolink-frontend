@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CTASection: React.FC = () => {
   return (
@@ -10,9 +11,14 @@ const CTASection: React.FC = () => {
         Join thousands of businesses already growing with SokoLink. Start your journey today.
       </p>
       <div className="flex justify-center gap-4">
-        <button className="bg-white text-teal-700 px-6 py-3 rounded-lg font-semibold shadow hover:bg-gray-100">
-          Get started now
-        </button>
+        
+
+<Link to="/signup">
+  <button className="bg-white text-teal-700 px-6 py-3 rounded-lg font-semibold shadow hover:bg-gray-100">
+    Get started now
+  </button>
+</Link>
+    
         <button className="border border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-700">
           Learn More
         </button>

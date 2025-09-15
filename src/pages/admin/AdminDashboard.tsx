@@ -11,7 +11,7 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom"; // ✅ added useNavigate
 import Logo from "../../assets/logo.svg";
 
 function AdminDashboard() {
@@ -24,9 +24,17 @@ function AdminDashboard() {
   const [isnewNotification, setIsNewNotification] = useState(true);
   const [isNotificationOpn, setIsNotificationOpen] = useState(false);
 
-  // ✅ Track active link
-  const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const navigate = useNavigate(); // ✅ hook for navigation
+
+  const handleLogout = () => {
+    // Clear user token or session info
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedOutMessage"); // if you had such a key
+    sessionStorage.clear(); // clear any session storage too
+
+    // Redirect to login page and replace history
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="flex bg-[#e1f1f1]">
@@ -96,8 +104,9 @@ function AdminDashboard() {
 
                 {/* Dropdown menus */}
                 <div
-                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out
-                  ${isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                    isUsersOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
+                  }`}
                 >
                   <Link
                     to="users"
@@ -142,8 +151,9 @@ function AdminDashboard() {
 
                 {/* Dropdown menus */}
                 <div
-                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out
-                  ${isProductsOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"}`}
+                  className={`ml-5 flex flex-col gap-1 mt-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                    isProductsOpen ? "max-h-32 opacity-100" : "max-h-0 opacity-0"
+                  }`}
                 >
                   <Link
                     to="products"
@@ -172,13 +182,14 @@ function AdminDashboard() {
           )}
         </div>
 
-        <Link
-          to="/admin"
-          className="flex gap-3 p-2 items-center rounded-[8px] text-[#FF6F61]"
-        >
-          <LogOutIcon size={20} />
-          <span>Logout</span>
-        </Link>
+        {/* ✅ Logout button now navigates */}
+       <button
+      onClick={handleLogout}
+      className="flex gap-3 p-2 items-center rounded-[8px] text-[#FF6F61] hover:bg-gray-100 transition-colors duration-200"
+    >
+      <LogOutIcon size={20} />
+      <span>Logout</span>
+    </button>
       </div>
 
       {/* Main Content */}
@@ -194,7 +205,9 @@ function AdminDashboard() {
           <div className="flex gap-[18px] items-center justify-center">
             <div
               className="relative cursor-pointer"
-              onClick={() => setIsNotificationOpen(!isNotificationOpn)}
+              onClick={() => {
+                setIsNotificationOpen(!isNotificationOpn);
+              }}
             >
               <BellIcon />
               {isnewNotification && (
