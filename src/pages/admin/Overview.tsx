@@ -234,7 +234,7 @@ function Overview() {
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Recent activities</h3>
 
 
-              <div className=" mt-2 flex flex-col gap-2">
+              <div className=" mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="flex items-start gap-3 p-[20px] bg-[#F4F2F1] rounded-[10px] border border-[#E0E0E0]">
                       {/* Left dot */}
                       <span className="w-[12px] h-[12px] bg-[#008A94] rounded-full mt-1"></span>
