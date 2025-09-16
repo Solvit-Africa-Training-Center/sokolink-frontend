@@ -9,25 +9,24 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    role: '',
     password: '',
   });
   const [errors, setErrors] = useState({
     email: '',
-    role: '',
     password: '',
   });
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const validateForm = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     let isValid = true;
-    const newErrors = { email: '', role: '', password: '' };
+    const newErrors = { email: '', password: '' };
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email Address is required.';
@@ -37,30 +36,22 @@ const Login: React.FC = () => {
       isValid = false;
     }
 
-    if (!formData.role) {
-      newErrors.role = 'Role is required.';
-      isValid = false;
-    }
-
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required.';
       isValid = false;
     }
 
     setErrors(newErrors);
-    return isValid;
-  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
+    if (isValid) {
       console.log('Login data:', formData);
-
-      if (formData.role === "Admin") {
-        navigate("/admin"); // ✅ Only Admin goes to dashboard
-      } else {
-        setErrors((prev) => ({ ...prev, role: "Only Admin can log in." }));
-      }
+      // Call backend API here, backend will return role
+      // Example:
+      // axios.post('/api/login', formData).then(res => {
+      //   if(res.data.role === 'Admin') navigate('/admin');
+      //   else if(res.data.role === 'Retailer') navigate('/retailer-dashboard');
+      //   else navigate('/wholesaler-dashboard');
+      // });
     }
   };
 
@@ -68,17 +59,9 @@ const Login: React.FC = () => {
     <div className='flex min-h-screen items-center justify-center bg-[#eaf4f3] p-4'>
       <div className='w-full max-w-lg rounded-xl bg-white p-8 shadow-lg'>
         <div className='mb-6 flex flex-col items-center justify-center'>
-          <div className="flex justify-center items-center mb-2">
-            <div className="flex items-center">
-              <Link to="/">
-                <img 
-                  src={Logo} 
-                  alt="SokoLink Logo" 
-                  className="h-10 w-auto cursor-pointer" 
-                />
-              </Link>
-            </div>
-          </div>
+          <Link to="/">
+            <img src={Logo} alt="SokoLink Logo" className="h-10 w-auto cursor-pointer" />
+          </Link>
           <h1 className='mt-4 text-3xl font-bold'>Welcome Back</h1>
           <p className='mt-1 text-center text-sm text-gray-500'>
             Sign in to your account to continue
@@ -86,85 +69,43 @@ const Login: React.FC = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Email Address */}
+          {/* Email */}
           <div className='mb-4'>
-            <label className='block text-sm font-medium text-gray-700'>
-              Email Address
-            </label>
+            <label className='block text-sm font-medium text-gray-700'>Email Address</label>
             <input
               type='email'
               name='email'
               value={formData.email}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${
-                errors.email
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-300 focus:border-teal-500'
-              }`}
+              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+                }`}
               placeholder='Enter your email'
             />
-            {errors.email && (
-              <p className='mt-1 text-xs text-red-500'>{errors.email}</p>
-            )}
-          </div>
-
-          {/* Select Role */}
-          <div className='mb-4'>
-            <label className='block text-sm font-medium text-gray-700'>
-              Select Role
-            </label>
-            <select
-              name='role'
-              value={formData.role}
-              onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${
-                errors.role
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-300 focus:border-teal-500'
-              }`}
-            >
-              <option value='' disabled>Select Role</option>
-              <option value='Retailer'>Retailer</option>
-              <option value='Wholesaler'>Wholesaler</option>
-              <option value='Admin'>Admin</option>
-            </select>
-            {errors.role && (
-              <p className='mt-1 text-xs text-red-500'>{errors.role}</p>
-            )}
+            {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
           </div>
 
           {/* Password */}
-          <div className='mb-4 relative'>
-            <label className='block text-sm font-medium text-gray-700'>
-              Password
-            </label>
+          <div className='mb-6 relative'>
+            <label className='block text-sm font-medium text-gray-700'>Password</label>
             <input
               type={showPassword ? 'text' : 'password'}
               name='password'
               value={formData.password}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${
-                errors.password
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-300 focus:border-teal-500'
-              }`}
+              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+                }`}
               placeholder='Enter your password'
             />
             <span
               onClick={togglePasswordVisibility}
               className='absolute inset-y-0 right-0 top-6 flex cursor-pointer items-center pr-3 text-gray-400'
             >
-              {showPassword ? (
-                <MdOutlineVisibilityOff className='h-5 w-5' />
-              ) : (
-                <MdOutlineVisibility className='h-5 w-5' />
-              )}
+              {showPassword ? <MdOutlineVisibilityOff className='h-5 w-5' /> : <MdOutlineVisibility className='h-5 w-5' />}
             </span>
-            {errors.password && (
-              <p className='mt-1 text-xs text-red-500'>{errors.password}</p>
-            )}
+            {errors.password && <p className='mt-1 text-xs text-red-500'>{errors.password}</p>}
           </div>
 
+          {/* Remember me & forgot password */}
           <div className='mb-6 flex items-center justify-between'>
             <div className='flex items-center'>
               <input
@@ -173,15 +114,10 @@ const Login: React.FC = () => {
                 type='checkbox'
                 className='h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500'
               />
-              <label htmlFor='remember-me' className='ml-2 block text-sm text-gray-700'>
-                Remember me
-              </label>
+              <label htmlFor='remember-me' className='ml-2 block text-sm text-gray-700'>Remember me</label>
             </div>
             <div className='text-sm'>
-              <Link
-                to="/forgotpassword"
-                className="text-sm text-teal-600 hover:text-teal-800"
-              >
+              <Link to="/forgotpassword" className="text-sm text-teal-600 hover:text-teal-800">
                 Forgot Password?
               </Link>
             </div>
@@ -197,26 +133,12 @@ const Login: React.FC = () => {
 
         <p className='mt-6 text-center text-sm text-gray-500'>
           Don't have an account?{' '}
-          <Link
-            to='/signup'
-            className='font-semibold text-teal-600 hover:underline'
-          >
-            Sign Up
-          </Link>
+          <Link to='/signup' className='font-semibold text-teal-600 hover:underline'>Sign Up</Link>
         </p>
 
-        <div className='my-6 flex items-center justify-center'>
-          <div className='h-px w-full bg-gray-300'></div>
-          <span className='mx-4 whitespace-nowrap text-sm text-gray-500'>Or Login with</span>
-          <div className='h-px w-full bg-gray-300'></div>
-        </div>
+        
 
-        <button
-          className="w-full flex items-center justify-center gap-3 rounded-md border border-gray-300 bg-[#f5f4ef] px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-        >
-          <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
-          Google
-        </button>
+       
       </div>
     </div>
   );
