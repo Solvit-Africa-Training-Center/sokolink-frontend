@@ -4,7 +4,6 @@ import type {
   ApiResponse,
   Product,
   ProductListResponse,
-  GetProductsParams,
   CreateProductRequest,
   UpdateProductRequest
 } from '../../types';
@@ -12,7 +11,7 @@ import type {
 export const productsApi = createApi({
   reducerPath: 'productsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.yourdomain.com/v1/',
+    baseUrl: '/api/',
     prepareHeaders: (headers) => {
       // Add auth token if needed
       const token = localStorage.getItem('authToken');
@@ -23,34 +22,28 @@ export const productsApi = createApi({
     },
   }),
   tagTypes: ['Product'], // For cache invalidation
+
+  // ✅ Put these at the API level (not inside baseQuery, not inside endpoints)
+  refetchOnFocus: false,
+  refetchOnReconnect: false,
+  refetchOnMountOrArgChange: false,
+  keepUnusedDataFor: 60,
+
   endpoints: (builder) => ({
-    
     // GET all products with optional filters
-    getProducts: builder.query<ApiResponse<ProductListResponse>, GetProductsParams>({
-      query: (params) => {
-        const searchParams = new URLSearchParams();
-        
-        if (params.page) searchParams.append('page', params.page.toString());
-        if (params.limit) searchParams.append('limit', params.limit.toString());
-        if (params.category) searchParams.append('category', params.category);
-        if (params.minPrice) searchParams.append('minPrice', params.minPrice.toString());
-        if (params.maxPrice) searchParams.append('maxPrice', params.maxPrice.toString());
-        if (params.search) searchParams.append('search', params.search);
-        if (params.sortBy) searchParams.append('sortBy', params.sortBy);
-        if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
-        
-        return `products?${searchParams.toString()}`;
-      },
+    getProducts: builder.query<ApiResponse<ProductListResponse>, void>({
+      query: () => '/products',
       providesTags: ['Product'],
     }),
-    
+
     // GET single product by ID
     getProductById: builder.query<ApiResponse<Product>, string>({
       query: (productId) => `products/${productId}`,
-      providesTags: (result, error, productId) => 
-        [{ type: 'Product', id: productId }],
+      providesTags: (result, error, productId) => [
+        { type: 'Product', id: productId },
+      ],
     }),
-    
+
     // CREATE a new product
     createProduct: builder.mutation<ApiResponse<Product>, CreateProductRequest>({
       query: (newProduct) => ({
@@ -58,9 +51,9 @@ export const productsApi = createApi({
         method: 'POST',
         body: newProduct,
       }),
-      invalidatesTags: ['Product'], // Refresh product list after creation
+      invalidatesTags: ['Product'],
     }),
-    
+
     // UPDATE a product
     updateProduct: builder.mutation<ApiResponse<Product>, UpdateProductRequest>({
       query: ({ productId, ...updates }) => ({
@@ -70,10 +63,10 @@ export const productsApi = createApi({
       }),
       invalidatesTags: (result, error, { productId }) => [
         { type: 'Product', id: productId },
-        'Product', // Also invalidate the list
+        'Product',
       ],
     }),
-    
+
     // DELETE a product
     deleteProduct: builder.mutation<ApiResponse<{ message: string }>, string>({
       query: (productId) => ({
@@ -82,19 +75,19 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ['Product'],
     }),
-    
+
     // GET products by category
     getProductsByCategory: builder.query<ApiResponse<ProductListResponse>, string>({
       query: (categoryId) => `products/category/${categoryId}`,
       providesTags: ['Product'],
     }),
-    
+
     // GET products by user (seller)
     getProductsByUser: builder.query<ApiResponse<ProductListResponse>, string>({
       query: (userId) => `products/user/${userId}`,
       providesTags: ['Product'],
     }),
-    
+
     // SEARCH products
     searchProducts: builder.query<ApiResponse<ProductListResponse>, string>({
       query: (searchTerm) => `products/search?q=${encodeURIComponent(searchTerm)}`,

@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
       </div>
       <div className="flex items-center justify-between w-[600px]">
         <nav className="hidden md:flex space-x-6 text-sm font-medium">
-          <a href="#products" className="hover:text-teal-600">Products</a>
+          <a href="/products" className="hover:text-teal-600">Products</a>
           <Link to="/about" className="hover:text-teal-600">About</Link>
           <Link to="/contact" className="hover:text-teal-600">Contact</Link>
           <Link to="/help">Help</Link>

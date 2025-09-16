@@ -14,6 +14,8 @@ import Reports from './pages/admin/Reports';
 import Analytics from './pages/admin/Analytics';
 import Users from './pages/admin/Users';
 import AllUsers from './pages/admin/AllUsers';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
 
 const App: React.FC = () => {
   return (
@@ -26,7 +28,9 @@ const App: React.FC = () => {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/help" element={<Help />} /> {/* ✅ Help at /help */}
+        <Route path="/help" element={<Help />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/productdetail/:id" element={<ProductDetail />} />
         <Route path='/admin' element={<AdminDashboard />} >
           <Route index element={<Overview />} />
           <Route path="reports" element={<Reports />} />
