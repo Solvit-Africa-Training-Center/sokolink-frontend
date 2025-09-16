@@ -1,36 +1,32 @@
-function Sidebar() {
-const links = [
-{ key: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
-{ key: 'products', label: 'My Products', icon: 'products' },
-{ key: 'add', label: 'Add Product', icon: 'products' },
-{ key: 'orders', label: 'Orders', icon: 'orders' },
-{ key: 'track', label: 'Track Orders', icon: 'orders' },
-{ key: 'analytics', label: 'Analytics', icon: 'dashboard' },
-{ key: 'verification', label: 'Verification', icon: 'dashboard' },
-{ key: 'profile', label: 'Profile', icon: 'dashboard' },
-{ key: 'notifications', label: 'Notifications', icon: 'bell' },
-];
+import React from "react";
+import { LogOut } from "lucide-react";
 
+const Sidebar: React.FC = () => {
+  return (
+    <aside className="w-60 bg-white shadow-md flex flex-col justify-between">
+      <div className="p-6">
+        <h1 className="text-xl font-bold text-sky-600">SokoLink</h1>
+        <nav className="mt-6 space-y-4">
+          <a className="block text-gray-700 hover:text-sky-600">Dashboard</a>
+          <a className="block text-gray-700 hover:text-sky-600">My Products</a>
+          <a className="block text-gray-700 hover:text-sky-600">Add Product</a>
+          <a className="block text-gray-700 hover:text-sky-600">Orders</a>
+          <a className="block text-gray-700 hover:text-sky-600">Track Orders</a>
+          <a className="block text-gray-700 hover:text-sky-600">Analytics</a>
+          <a className="block text-gray-700 hover:text-sky-600">Verification</a>
+          <a className="block text-gray-700 hover:text-sky-600">Profile</a>
+          <a className="block text-gray-700 hover:text-sky-600">Notifications</a>
+        </nav>
+      </div>
 
-return (
-<aside className="w-72 bg-white border-r h-screen sticky top-0 px-6 py-8">
-<div className="flex items-center gap-3 mb-8">
-<div className="w-10 h-10 rounded-lg bg-teal-500 flex items-center justify-center text-white font-bold">S</div>
-<div>
-<div className="font-semibold">SokoLink</div>
-<div className="text-sm text-slate-400">Wholesale</div>
-</div>
-</div>
+      {/* Logout */}
+      <div className="p-6 border-t">
+        <button className="flex items-center gap-2 text-red-500 hover:text-red-600">
+          <LogOut size={18} /> Logout
+        </button>
+      </div>
+    </aside>
+  );
+};
 
-
-<nav className="space-y-2">
-{links.map(link => (
-<button key={link.key} className={`w-full flex items-center gap-3 text-left p-3 rounded-lg hover:bg-slate-50 ${link.key === 'dashboard' ? 'bg-slate-50' : ''}`}>
-<Icon name={link.icon} className="w-5 h-5 text-slate-600" />
-<span className="text-slate-700">{link.label}</span>
-</button>
-))}
-</nav>
-</aside>
-);
-}
+export default Sidebar;

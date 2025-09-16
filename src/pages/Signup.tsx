@@ -390,18 +390,9 @@ const Signup: React.FC = () => {
           </Link>
         </p>
 
-        <div className='my-6 flex items-center justify-center'>
-          <div className='h-px w-full bg-gray-300'></div>
-          <span className='mx-4 whitespace-nowrap text-sm text-gray-500'>Or Sign up with</span>
-          <div className='h-px w-full bg-gray-300'></div>
-        </div>
+        
 
-        <button
-      className="w-full flex items-center justify-center gap-3 rounded-md border border-gray-300 bg-[#f5f4ef] px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-    >
-      <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
-       Google
-    </button>
+        
       </div>
     </div>
   );
