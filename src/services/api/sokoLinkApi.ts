@@ -5,15 +5,15 @@ import type {
   Product,
   ProductListResponse,
   CreateProductRequest,
-  UpdateProductRequest
+  UpdateProductRequest,
 } from '../../types';
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
+
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/',
     prepareHeaders: (headers) => {
-      // Add auth token if needed
       const token = localStorage.getItem('authToken');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -21,23 +21,22 @@ export const productsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Product'], // For cache invalidation
 
-  // ✅ Put these at the API level (not inside baseQuery, not inside endpoints)
+  tagTypes: ['Product'],
   refetchOnFocus: false,
   refetchOnReconnect: false,
   refetchOnMountOrArgChange: false,
   keepUnusedDataFor: 60,
 
   endpoints: (builder) => ({
-    // GET all products with optional filters
+    // GET all products
     getProducts: builder.query<ApiResponse<ProductListResponse>, void>({
-      query: () => '/products',
+      query: () => 'products',
       providesTags: ['Product'],
     }),
 
     // GET single product by ID
-    getProductById: builder.query<ApiResponse<Product>, string>({
+    getProductById: builder.query<ApiResponse<Product>, any>({
       query: (productId) => `products/${productId}`,
       providesTags: (result, error, productId) => [
         { type: 'Product', id: productId },
@@ -82,7 +81,7 @@ export const productsApi = createApi({
       providesTags: ['Product'],
     }),
 
-    // GET products by user (seller)
+    // GET products by user
     getProductsByUser: builder.query<ApiResponse<ProductListResponse>, string>({
       query: (userId) => `products/user/${userId}`,
       providesTags: ['Product'],
@@ -96,7 +95,7 @@ export const productsApi = createApi({
   }),
 });
 
-// Export hooks for usage in components
+//Export hooks
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,

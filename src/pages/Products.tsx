@@ -1,8 +1,9 @@
 import  { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useGetProductsQuery } from '../services/api/sokoLinkApi';
-import { StarIcon } from 'lucide-react';
+import {  Heart, ShoppingCartIcon, StarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 
 // Define the product interface based on your data structure
@@ -57,7 +58,7 @@ function Products() {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
-    const matchesLocation = true; // Assuming all products are from Kigali based on design
+    const matchesLocation = true; 
     
     return matchesSearch && matchesPrice && matchesLocation;
   });
@@ -68,7 +69,7 @@ function Products() {
         <Navbar />
         <div className="px-[120px] py-8">
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#008994]"></div>
           </div>
         </div>
       </div>
@@ -107,16 +108,16 @@ function Products() {
   return (
     <div>
       <Navbar />
-      <div className="px-[120px] py-8">
+      <div className="px-5 md:px-[120px] py-4 md:py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className='text-4xl font-bold text-black mb-2'>Browse Products</h1>
           <p className="text-gray-600 text-lg">Discover quality from verified wholesalers and retailers.</p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col md:flex gap-8">
           {/* Filters Sidebar */}
-          <div className="w-80 flex-shrink-0">
+          <div className="md:w-80 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold mb-4">Filters</h2>
               
@@ -204,7 +205,7 @@ function Products() {
               </div>
 
               {/* Apply Filter Button */}
-              <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+              <button className="w-full bg-[#008994] text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
                 Apply filter
               </button>
             </div>
@@ -218,11 +219,16 @@ function Products() {
                 const discount = Math.round(((originalPrice - product.price) / originalPrice) * 100);
 
                 return (
-                  <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative hover:scale-3d">
+                    {/* Heart button */}
+                    <button className="absolute top-4 right-4 p-2  rounded-full cursor-pointer ">
+                      <Heart size={18} className="text-[#FF6F61] cursor-pointer" />
+                    </button>
+
                     {/* Product Image */}
                     <div className="relative">
                       <img
-                        src={product.images[0] || '/placeholder-image.jpg'}
+                        src={product.images[1] || '/placeholder-image.jpg'}
                         alt={product.name}
                         className="w-full h-48 object-cover"
                       />
@@ -232,7 +238,7 @@ function Products() {
                         </div>
                       )}
                       {discount > 0 && (
-                        <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-sm">
+                        <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-sm hidden">
                           -{discount}%
                         </div>
                       )}
@@ -242,19 +248,19 @@ function Products() {
                     <div className="p-4">
                       {/* Rating and Reviews */}
                       <div className="flex items-center mb-2">
-                        <div className="flex text-yellow-400">
+                        {/* <div className="flex text-yellow-400">
                           {[...Array(5)].map((_, i) => (
                             <span key={i} className="text-sm"><StarIcon/></span>
                           ))}
-                        </div>
-                        <span className="text-gray-600 ml-2 text-sm">
-                                    <StarIcon /> 4.8 (124 Reviews)
+                        </div> */}
+                        <span className="text-gray-600  text-sm flex items-center gap-2">
+                          <StarIcon /><span> 4.8 (124 Reviews)</span>
                         </span>
                       </div>
 
                       {/* Seller Name */}
                       <p className="text-gray-600 text-sm mb-2">
-                        💬 Kigali Wholesaler LTD
+                        Kigali Wholesaler LTD
                       </p>
 
                       {/* Product Name */}
@@ -264,26 +270,26 @@ function Products() {
 
                       {/* Price Section */}
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-green-600 font-bold text-lg">
+                        <span className="text-[#008994] text-bold text-lg">
                           {formatPrice(product.price)}
                         </span>
                         {discount > 0 && (
-                          <span className="text-gray-400 line-through text-sm">
+                          <span className="text-gray-400 line-through text-sm hidden">
                             {formatPrice(originalPrice)}
                           </span>
                         )}
                       </div>
 
                       {/* Buttons */}
-                      <div className="flex gap-2">
-                        <Link to={'/productdetail/'+product.id} className="flex-1 bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700 transition-colors text-sm">
+                      <div className="flex flex-col gap-2 text-center">
+                        <Link to={'/productdetail/' + product.id} className="flex-1 py-2 px-4  text-[#008994] text-sm  hover:bg-[#008994] items-center justify-center gap-1 hover:text-white rounded border border-[#008994] hover:border-transparent transition-colors">
                           View details
                         </Link>
                         <button
-                          className="flex-1 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors text-sm disabled:bg-gray-300 disabled:cursor-not-allowed"
+                          className="flex-1 flex bg-[#008994] items-center justify-center gap-1 text-white py-2 px-4 rounded hover:bg-transparent transition-colors text-sm border border-[#008994] hover:text-[#008994]"
                           disabled={!product.isAvailable || product.stock === 0}
                         >
-                          Add to cart
+                          <span> Add to cart</span> <ShoppingCartIcon size={20}/>
                         </button>
                       </div>
                     </div>
@@ -311,6 +317,7 @@ function Products() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
