@@ -44,14 +44,15 @@ const Login: React.FC = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      console.log('Login data:', formData);
-      // Call backend API here, backend will return role
-      // Example:
-      // axios.post('/api/login', formData).then(res => {
-      //   if(res.data.role === 'Admin') navigate('/admin');
-      //   else if(res.data.role === 'Retailer') navigate('/retailer-dashboard');
-      //   else navigate('/wholesaler-dashboard');
-      // });
+      // 🔹 Hardcoded login for presentation
+      if (
+        formData.email === "ganzad73@gmail.com" &&
+        formData.password === "12345"
+      ) {
+        navigate("/admin", { replace: true });
+      } else {
+        alert("User doesn't exist");
+      }
     }
   };
 
@@ -77,8 +78,9 @@ const Login: React.FC = () => {
               name='email'
               value={formData.email}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
-                }`}
+              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${
+                errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+              }`}
               placeholder='Enter your email'
             />
             {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
@@ -92,15 +94,20 @@ const Login: React.FC = () => {
               name='password'
               value={formData.password}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
-                }`}
+              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${
+                errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+              }`}
               placeholder='Enter your password'
             />
             <span
               onClick={togglePasswordVisibility}
               className='absolute inset-y-0 right-0 top-6 flex cursor-pointer items-center pr-3 text-gray-400'
             >
-              {showPassword ? <MdOutlineVisibilityOff className='h-5 w-5' /> : <MdOutlineVisibility className='h-5 w-5' />}
+              {showPassword ? (
+                <MdOutlineVisibilityOff className='h-5 w-5' />
+              ) : (
+                <MdOutlineVisibility className='h-5 w-5' />
+              )}
             </span>
             {errors.password && <p className='mt-1 text-xs text-red-500'>{errors.password}</p>}
           </div>
@@ -114,7 +121,9 @@ const Login: React.FC = () => {
                 type='checkbox'
                 className='h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500'
               />
-              <label htmlFor='remember-me' className='ml-2 block text-sm text-gray-700'>Remember me</label>
+              <label htmlFor='remember-me' className='ml-2 block text-sm text-gray-700'>
+                Remember me
+              </label>
             </div>
             <div className='text-sm'>
               <Link to="/forgotpassword" className="text-sm text-teal-600 hover:text-teal-800">
@@ -135,10 +144,6 @@ const Login: React.FC = () => {
           Don't have an account?{' '}
           <Link to='/signup' className='font-semibold text-teal-600 hover:underline'>Sign Up</Link>
         </p>
-
-        
-
-       
       </div>
     </div>
   );
