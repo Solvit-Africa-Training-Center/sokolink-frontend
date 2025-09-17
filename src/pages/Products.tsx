@@ -108,14 +108,14 @@ function Products() {
   return (
     <div>
       <Navbar />
-      <div className="px-5 md:px-[120px] py-4 md:py-8">
+      <div className="px-5 md:px-[120px] py-4 md:py-8 bg-[#e1f5ee] ">
         {/* Header */}
         <div className="mb-8">
           <h1 className='text-4xl font-bold text-black mb-2'>Browse Products</h1>
           <p className="text-gray-600 text-lg">Discover quality from verified wholesalers and retailers.</p>
         </div>
 
-        <div className="flex flex-col md:flex gap-8">
+        <div className="flex flex-col md:flex-row gap-8">
           {/* Filters Sidebar */}
           <div className="md:w-80 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-md p-6">
@@ -213,7 +213,7 @@ function Products() {
 
           {/* Products Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {(filteredProducts || productsResponse.data).map((product) => {
                 const originalPrice = product.price * 1.5;
                 const discount = Math.round(((originalPrice - product.price) / originalPrice) * 100);
@@ -228,7 +228,7 @@ function Products() {
                     {/* Product Image */}
                     <div className="relative">
                       <img
-                        src={product.images[1] || '/placeholder-image.jpg'}
+                        src='https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D'
                         alt={product.name}
                         className="w-full h-48 object-cover"
                       />
