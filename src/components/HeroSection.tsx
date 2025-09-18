@@ -1,6 +1,7 @@
 import React from "react";
 import images from "../data/images";
 import Slider from "./Slider";
+import { Link } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   return (
@@ -19,9 +20,11 @@ const HeroSection: React.FC = () => {
           <button className="bg-teal-500 text-white px-6 py-3 rounded-md font-medium hover:bg-teal-600">
             Start Shopping
           </button>
-          <button className="border border-gray-300 px-6 py-3 rounded-md font-medium hover:border-teal-500 hover:text-teal-500">
-            Browse Products
-          </button>
+          <Link to="/products">
+            <button className="border border-gray-300 px-6 py-3 rounded-md font-medium hover:border-teal-500 hover:text-teal-500">
+              Browse Products
+            </button>
+          </Link>
         </div>
       </div>
       <div className="flex justify-center">

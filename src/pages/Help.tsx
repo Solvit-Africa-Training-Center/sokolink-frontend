@@ -90,10 +90,13 @@ const HelpPage: React.FC = () => {
           <p className="text-sm text-gray-500 mb-4">{faqs.length} Articles found</p>
 
           <div className="space-y-3">
-            {faqs.map((faq, idx) => (
-              <AccordionItem key={idx} question={faq.question} answer={faq.answer} />
-            ))}
-          </div>
+  {faqs.map((faq, idx) => (
+    <div key={idx} className="border-0">
+      <AccordionItem question={faq.question} answer={faq.answer} />
+    </div>
+  ))}
+</div>
+
         </section>
       </div>
 
@@ -108,8 +111,8 @@ const HelpPage: React.FC = () => {
 
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Live Chat */}
-          <div className="bg-white p-6 rounded-lg shadow text-center border">
-            <MessageCircle className="mx-auto text-red-400 mb-4" size={36} />
+          <div className="bg-white p-6 rounded-lg shadow text-center shadow">
+            <MessageCircle className="mx-auto text-red-400 mb-4" size={24} />
             <h3 className="font-semibold text-lg mb-2">Live Chat</h3>
             <p className="text-gray-500 mb-4">Get instant help from our support team</p>
             <button className="bg-gray-100 px-4 py-2 rounded-md text-gray-800 font-medium">
@@ -119,8 +122,8 @@ const HelpPage: React.FC = () => {
           </div>
 
           {/* Phone Support */}
-          <div className="bg-white p-6 rounded-lg shadow text-center border">
-            <Phone className="mx-auto text-teal-500 mb-4" size={36} />
+          <div className="bg-white p-6 rounded-lg shadow text-center shadow">
+            <Phone className="mx-auto text-teal-500 mb-4" size={24} />
             <h3 className="font-semibold text-lg mb-2">Phone Support</h3>
             <p className="text-gray-500 mb-4">Call for urgent matters</p>
             <p className="font-medium text-gray-800">+256 700 000 000</p>
@@ -128,8 +131,8 @@ const HelpPage: React.FC = () => {
           </div>
 
           {/* Email Support */}
-          <div className="bg-white p-6 rounded-lg shadow text-center border">
-            <Mail className="mx-auto text-yellow-500 mb-4" size={36} />
+          <div className="bg-white p-6 rounded-lg shadow text-center shadow">
+            <Mail className="mx-auto text-yellow-500 mb-4" size={24} />
             <h3 className="font-semibold text-lg mb-2">Email Support</h3>
             <p className="text-gray-500 mb-4">Send us detailed questions</p>
             <p className="font-medium text-gray-800">support@sokolink.com</p>

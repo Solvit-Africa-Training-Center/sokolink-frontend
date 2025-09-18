@@ -1,27 +1,31 @@
-interface Order { id: string; code: string; status: 'Processing' | 'Shipped' | 'Delivering'; store: string; date: string; items: number; amount: number }
-function RecentOrders({ orders }: { orders: Order[] }) {
-return (
-<div className="bg-white p-5 rounded-2xl shadow-sm border h-full">
-<div className="flex items-center justify-between mb-4">
-<h3 className="font-semibold">Recent Orders</h3>
-<a className="text-sm text-slate-500">View All</a>
-</div>
+import React from "react";
 
+const RecentOrders: React.FC = () => {
+  const orders = [
+    { id: "ORD-W001", status: "Processing", store: "Sarah’s Store", items: 45, amount: "Rwf 2,400,000" },
+    { id: "ORD-W002", status: "Shipped", store: "City Electronics", items: 30, amount: "Rwf 2,100,000" },
+    { id: "ORD-W003", status: "Delivering", store: "Metro Retail", items: 23, amount: "Rwf 500,000" },
+  ];
 
-<div className="space-y-3">
-{orders.map(o => (
-<div key={o.id} className="p-3 rounded-lg bg-slate-50 flex items-start justify-between">
-<div>
-<div className="flex items-center gap-2">
-<div className="text-sm font-medium">{o.code}</div>
-<div className={`text-xs px-2 py-0.5 rounded-full ${o.status === 'Shipped' ? 'bg-rose-100 text-rose-600' : o.status === 'Processing' ? 'bg-amber-100 text-amber-700' : 'bg-teal-100 text-teal-700'}`}>{o.status}</div>
-</div>
-<div className="text-sm text-slate-500 mt-1">{o.store} · {o.date} · {o.items} items · Rwf {o.amount.toLocaleString()}</div>
-</div>
-<div className="text-sm text-slate-400">View</div>
-</div>
-))}
-</div>
-</div>
-);
-}
+  return (
+    <div className="bg-white p-4 rounded-xl shadow">
+      <div className="flex justify-between mb-4">
+        <h3 className="font-bold">Recent Orders</h3>
+        <a href="#" className="text-sm text-teal-600">View All</a>
+      </div>
+      {orders.map((order, i) => (
+        <div key={i} className="flex justify-between items-center p-3 border-b last:border-0">
+          <div>
+            <p className="font-semibold">{order.id} 
+              <span className="ml-2 text-xs px-2 py-1 rounded-full bg-gray-100">{order.status}</span>
+            </p>
+            <p className="text-sm text-gray-500">{order.store} - {order.items} items</p>
+          </div>
+          <p className="text-sm font-semibold">{order.amount}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default RecentOrders;
