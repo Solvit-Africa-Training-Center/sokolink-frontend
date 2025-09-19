@@ -24,9 +24,7 @@ const Sidebar: React.FC = () => {
         <a className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100" href="#">
           <ClipboardList size={20}/> Orders
         </a>
-        <a className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100" href="#">
-          <Truck size={20}/> Track Orders
-        </a>
+       
         <a className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100" href="#">
           <BarChart3 size={20}/> Analytics
         </a>
