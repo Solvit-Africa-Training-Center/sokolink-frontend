@@ -5,10 +5,11 @@ import type {
   Product,
   ProductListResponse,
   CreateProductRequest,
-  UpdateProductRequest,
+  AdminLoginRequest,
+  AdminLoginResponse,User
 } from '../../types';
 
-export const productsApi = createApi({
+export const sokoLinkApi = createApi({
   reducerPath: 'productsApi',
 
   baseQuery: fetchBaseQuery({
@@ -38,9 +39,7 @@ export const productsApi = createApi({
     // GET single product by ID
     getProductById: builder.query<ApiResponse<Product>, any>({
       query: (productId) => `products/${productId}`,
-      providesTags: (result, error, productId) => [
-        { type: 'Product', id: productId },
-      ],
+      providesTags:['Product'],
     }),
 
     // CREATE a new product
@@ -52,57 +51,21 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ['Product'],
     }),
-
-    // UPDATE a product
-    updateProduct: builder.mutation<ApiResponse<Product>, UpdateProductRequest>({
-      query: ({ productId, ...updates }) => ({
-        url: `products/${productId}`,
-        method: 'PUT',
-        body: updates,
+    adminLogin: builder.mutation<AdminLoginResponse<User>, AdminLoginRequest>({
+      query: (adminLogin) => ({
+        url: 'admin/login',
+        method: 'POST',
+        body: adminLogin,
       }),
-      invalidatesTags: (result, error, { productId }) => [
-        { type: 'Product', id: productId },
-        'Product',
-      ],
-    }),
+    })
 
-    // DELETE a product
-    deleteProduct: builder.mutation<ApiResponse<{ message: string }>, string>({
-      query: (productId) => ({
-        url: `products/${productId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Product'],
-    }),
-
-    // GET products by category
-    getProductsByCategory: builder.query<ApiResponse<ProductListResponse>, string>({
-      query: (categoryId) => `products/category/${categoryId}`,
-      providesTags: ['Product'],
-    }),
-
-    // GET products by user
-    getProductsByUser: builder.query<ApiResponse<ProductListResponse>, string>({
-      query: (userId) => `products/user/${userId}`,
-      providesTags: ['Product'],
-    }),
-
-    // SEARCH products
-    searchProducts: builder.query<ApiResponse<ProductListResponse>, string>({
-      query: (searchTerm) => `products/search?q=${encodeURIComponent(searchTerm)}`,
-      providesTags: ['Product'],
-    }),
+   
   }),
 });
 
-//Export hooks
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
   useCreateProductMutation,
-  useUpdateProductMutation,
-  useDeleteProductMutation,
-  useGetProductsByCategoryQuery,
-  useGetProductsByUserQuery,
-  useSearchProductsQuery,
-} = productsApi;
+  useAdminLoginMutation
+} = sokoLinkApi;

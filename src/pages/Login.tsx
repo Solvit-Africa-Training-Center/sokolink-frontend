@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import googleLogo from "../assets/googlelogo.png";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';

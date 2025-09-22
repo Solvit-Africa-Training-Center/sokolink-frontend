@@ -40,17 +40,6 @@ export interface ProductListResponse {
   totalPages: number;
 }
 
-// Parameters for getting products
-export interface GetProductsParams {
-  page?: number;
-  limit?: number;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  search?: string;
-  sortBy?: 'name' | 'price' | 'createdAt' | 'updatedAt';
-  sortOrder?: 'asc' | 'desc';
-}
 
 // Parameters for creating a product
 export interface CreateProductRequest {
@@ -68,4 +57,17 @@ export interface CreateProductRequest {
 // Parameters for updating a product
 export interface UpdateProductRequest extends Partial<CreateProductRequest> {
   productId: string;
+}
+export interface AdminLoginRequest {
+  email: string;
+  password: string;
+}
+export interface AdminLoginResponse<T> {
+  token: string;
+  user: T
+}
+export interface User {
+  userId: string;
+  name: string;
+  email: string;
 }
