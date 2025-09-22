@@ -1,11 +1,14 @@
 import { BoxIcon, CheckCircle, CircleXIcon, ClipboardMinus, DollarSignIcon, EyeIcon, MessageSquareIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectCurrentUser } from "../../slices/authSlice";
 
 function Overview() {
+    const {user}=useSelector(selectCurrentUser)
   return (
       <div>
           <h1 className="text-3xl font-bold  text-gray-800">
-              Welcome back Admin!
+              Welcome back { user?.name}!
           </h1>
           <p className=" text-gray-600">
               Dashboard Overview

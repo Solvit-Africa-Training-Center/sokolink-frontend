@@ -1,9 +1,10 @@
+import { Outlet } from "react-router-dom"
 
 
-function Products() {
+function AdminProducts() {
   return (
-    <div>Products</div>
+    <div><Outlet/></div>
   )
 }
 
-export default Products
+export default AdminProducts

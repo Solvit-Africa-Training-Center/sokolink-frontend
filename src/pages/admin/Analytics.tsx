@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   BarChart, Bar, PieChart, Pie, LineChart, Line, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
@@ -108,7 +108,7 @@ function Analytics() {
                 dataKey="value"
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
               >
-                {pieData.map((entry, index) => (
+                {pieData.map((index?: any) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
