@@ -71,3 +71,35 @@ export interface User {
   name: string;
   email: string;
 }
+export interface Retailer {
+  id: string;
+  name: string;
+  email: string;
+}
+export interface Wholesaler {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  businessLicenceDocument: string;
+  taxCertificate: string;
+}
+// types.ts (add types if not yet defined)
+export interface WholesalerRegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  roleName: "Wholesaler";
+  phoneNumber: string;
+  businessName: string;
+  taxNumber: string;
+  businessAddress: string;
+  businessLicenseNumber: string;
+  businessLicenseDocument: File; // file input
+  taxCertificate: File; // file input
+}
+
+export interface WholesalerRegisterResponse {
+  message: string;
+  wholesalerId: string;
+}

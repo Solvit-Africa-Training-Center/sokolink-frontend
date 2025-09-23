@@ -20,6 +20,7 @@ import ProductDetail from './pages/ProductDetail';
 import AdminLogin from './pages/AdminLogin';
 import PrivateRoute from './pages/PrivateRoute';
 import ProductModeration from './pages/admin/ProductModeration';
+import Retailers from './pages/admin/Retailers';
 
 const App: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="analytics" element={<Analytics />} />
           <Route path='users' element={<Users />}>
             <Route index element={<AllUsers />} />
+            <Route path='retailers' element={<Retailers />} />
           </Route>
         
           <Route path='productspage' element={<AdminProducts />}>
