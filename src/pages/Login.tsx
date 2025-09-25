@@ -1,10 +1,20 @@
+// Update your Login.tsx component
 import React, { useState } from 'react';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Logo from '../assets/logo.png';
+import { useRetailerWholesalerLoginMutation } from '../services/api/sokoLinkApi'; // 👈 Change this import
+import { setCredentials as setRetailerCredentials } from '../slices/retailerAuthSlice';
+import { setCredentials as setWholesalerCredentials } from '../slices/wholesalerAuthSlice';
+import { decodeToken } from '../utils/tokenUtils';
+import { getRoleName } from '../utils/roleMapping';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [retailerWholesalerLogin] = useRetailerWholesalerLoginMutation(); // 👈 Use the new mutation
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -14,15 +24,20 @@ const Login: React.FC = () => {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors({ ...errors, [name]: '' });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // In your handleSubmit function in Login.tsx
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let isValid = true;
     const newErrors = { email: '', password: '' };
@@ -41,17 +56,57 @@ const Login: React.FC = () => {
     }
 
     setErrors(newErrors);
+    if (!isValid) return;
 
-    if (isValid) {
-      // 🔹 Hardcoded login for presentation
-      if (
-        formData.email === "ganzad73@gmail.com" &&
-        formData.password === "12345"
-      ) {
-        navigate("/admin", { replace: true });
-      } else {
-        alert("User doesn't exist");
+    setIsLoading(true);
+
+    try {
+      const response = await retailerWholesalerLogin({
+        email: formData.email,
+        password: formData.password,
+      }).unwrap();
+
+      if (response.success) {
+        const token = response.data.token;
+        const decodedToken = decodeToken(token);
+        const roleName = getRoleName(decodedToken.role);
+
+        // 👇 ADD THESE CONSOLE LOGS TO SEE THE ROLE DATA
+        console.log('🔐 RAW TOKEN:', token);
+        console.log('🔓 DECODED TOKEN:', decodedToken);
+        console.log('🎭 ROLE ID FROM TOKEN:', decodedToken.role);
+        console.log('👤 ROLE NAME MAPPED:', roleName);
+        console.log('📧 USER EMAIL:', decodedToken.email);
+        console.log('🆔 USER ID:', decodedToken.id);
+
+        const userData = {
+          id: decodedToken.id,
+          email: decodedToken.email,
+          name: decodedToken.email.split('@')[0],
+        };
+
+        // Redirect based on role
+        if (roleName === 'retailer') {
+          console.log('➡️ Redirecting to Retailer Dashboard');
+          dispatch(setRetailerCredentials({ user: userData, token }));
+          navigate('/retailer/dashboard', { replace: true });
+        } else if (roleName === 'wholesaler') {
+          console.log('➡️ Redirecting to Wholesaler Dashboard');
+          dispatch(setWholesalerCredentials({ user: userData, token }));
+          navigate('/wholesaler/dashboard', { replace: true });
+        } else {
+          console.log('❌ Unknown role:', roleName);
+          alert('Access denied. Please use the appropriate login page.');
+        }
       }
+    } catch (error: any) {
+      console.error('❌ Login error:', error);
+      setErrors({
+        email: 'Invalid email or password',
+        password: 'Invalid email or password'
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,7 +119,7 @@ const Login: React.FC = () => {
           </Link>
           <h1 className='mt-4 text-3xl font-bold'>Welcome Back</h1>
           <p className='mt-1 text-center text-sm text-gray-500'>
-            Sign in to your account to continue
+            Sign in to your retailer or wholesaler account
           </p>
         </div>
 
@@ -77,9 +132,8 @@ const Login: React.FC = () => {
               name='email'
               value={formData.email}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${
-                errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
-              }`}
+              className={`mt-1 block w-full rounded-md border p-2 focus:ring-teal-500 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+                }`}
               placeholder='Enter your email'
             />
             {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
@@ -93,9 +147,8 @@ const Login: React.FC = () => {
               name='password'
               value={formData.password}
               onChange={handleInputChange}
-              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${
-                errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
-              }`}
+              className={`mt-1 block w-full rounded-md border p-2 pr-10 focus:ring-teal-500 ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-teal-500'
+                }`}
               placeholder='Enter your password'
             />
             <span
@@ -111,31 +164,12 @@ const Login: React.FC = () => {
             {errors.password && <p className='mt-1 text-xs text-red-500'>{errors.password}</p>}
           </div>
 
-          {/* Remember me & forgot password */}
-          <div className='mb-6 flex items-center justify-between'>
-            <div className='flex items-center'>
-              <input
-                id='remember-me'
-                name='remember-me'
-                type='checkbox'
-                className='h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500'
-              />
-              <label htmlFor='remember-me' className='ml-2 block text-sm text-gray-700'>
-                Remember me
-              </label>
-            </div>
-            <div className='text-sm'>
-              <Link to="/forgotpassword" className="text-sm text-teal-600 hover:text-teal-800">
-                Forgot Password?
-              </Link>
-            </div>
-          </div>
-
           <button
             type='submit'
-            className='w-full rounded-md bg-teal-600 p-3 font-semibold text-white transition-colors duration-200 hover:bg-teal-700'
+            disabled={isLoading}
+            className='w-full rounded-md bg-teal-600 p-3 font-semibold text-white transition-colors duration-200 hover:bg-teal-700 disabled:opacity-50'
           >
-            Login
+            {isLoading ? 'Signing in...' : 'Login'}
           </button>
         </form>
 

@@ -1,7 +1,7 @@
+// src/store/slices/wholesalerAuthSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-// Define User type according to your API response
 interface User {
   id?: string;
   name: string;
@@ -16,13 +16,10 @@ interface AuthState {
   error: string | null;
 }
 
-// Helper functions to read/write from localStorage
 const loadAuthData = () => {
   try {
-    const serializedState = localStorage.getItem('adminAuthData');
-    if (!serializedState) {
-      return { user: null, token: null };
-    }
+    const serializedState = localStorage.getItem('wholesalerAuthData');
+    if (!serializedState) return { user: null, token: null };
     return JSON.parse(serializedState) as { user: User | null; token: string | null };
   } catch {
     return { user: null, token: null };
@@ -31,7 +28,7 @@ const loadAuthData = () => {
 
 const saveAuthData = (authData: { user: User | null; token: string | null }) => {
   try {
-    localStorage.setItem('adminAuthData', JSON.stringify(authData));
+    localStorage.setItem('wholesalerAuthData', JSON.stringify(authData));
   } catch {
     // ignore errors
   }
@@ -47,8 +44,8 @@ const initialState: AuthState = {
   error: null,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const wholesalerAuthSlice = createSlice({
+  name: 'wholesalerAuth',
   initialState,
   reducers: {
     setCredentials: (state, action: PayloadAction<{ user: User; token: string }>) => {
@@ -56,15 +53,13 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.error = null;
-
       saveAuthData({ user: action.payload.user, token: action.payload.token });
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-        localStorage.removeItem("adminAuthData");
-      ;
+      localStorage.removeItem("wholesalerAuthData");
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -78,8 +73,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, setLoading, setError, clearError } = authSlice.actions;
-export default authSlice.reducer;
+export const { setCredentials, logout, setLoading, setError, clearError } = wholesalerAuthSlice.actions;
+export default wholesalerAuthSlice.reducer;
 
-// Selector
-export const selectCurrentUser = (state: { auth: AuthState }) => state.auth;
+export const selectCurrentWholesaler = (state: { wholesalerAuth: AuthState }) => state.wholesalerAuth;

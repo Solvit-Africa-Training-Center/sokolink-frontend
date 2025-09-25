@@ -1,12 +1,13 @@
-// types/product.ts
-
-// Variation interface for product options
+// General Product Variation (flexible for electronics/clothes/etc.)
 export interface ProductVariation {
-  colors: string[];
-  storage: string[];
+  colors?: string[];
+  storage?: string[];
+  sizes?: string[];
+  format?: string[];
+  memory?: string[];
+  language?: string[];
 }
 
-// Main Product interface
 export interface Product {
   productId: string;
   name: string;
@@ -24,20 +25,11 @@ export interface Product {
   updatedAt: string;
 }
 
-// API Response interface
-export interface ApiResponse<T> {
+// API Response (all products)
+export interface ProductsResponse {
   success: boolean;
   message: string;
-  data: T;
-}
-
-// Product List response (for multiple products)
-export interface ProductListResponse {
-  products: Product[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+  data: Product[];
 }
 
 
@@ -102,4 +94,20 @@ export interface WholesalerRegisterRequest {
 export interface WholesalerRegisterResponse {
   message: string;
   wholesalerId: string;
+}
+// Add to your existing types file (src/types.ts)
+
+// Login Request for Retailer/Wholesaler
+export interface RetailerWholesalerLoginRequest {
+  email: string;
+  password: string;
+}
+
+// Login Response for Retailer/Wholesaler
+export interface RetailerWholesalerLoginResponse {
+  data: {
+    token: string;
+  };
+  message: string;
+  success: boolean;
 }
