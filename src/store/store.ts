@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { sokoLinkApi } from "../services/api/sokoLinkApi"; // ✅ make sure the name matches
 import authReducer from "../slices/authSlice";
+import retailerAuthSlice from '../slices/retailerAuthSlice';
+import wholesalerAuthSlice from '../slices/wholesalerAuthSlice';
 
 export const store = configureStore({
   reducer: {
     [sokoLinkApi.reducerPath]: sokoLinkApi.reducer, // ✅ correct reducerPath
     auth: authReducer,
+      retailerAuth: retailerAuthSlice,
+    wholesalerAuth: wholesalerAuthSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sokoLinkApi.middleware), // ✅ add RTK Query middleware

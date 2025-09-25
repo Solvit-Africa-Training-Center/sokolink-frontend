@@ -1,9 +1,8 @@
 // services/api/sokoLinkApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type {
-  ApiResponse,
-  ProductListResponse,
   CreateProductRequest,
+  ProductsResponse,
   AdminLoginRequest,
   AdminLoginResponse,WholesalerRegisterRequest,WholesalerRegisterResponse,
   User,
@@ -63,19 +62,20 @@ export const sokoLinkApi = createApi({
 
   endpoints: (builder) => ({
     // GET all products
-    getProducts: builder.query<ApiResponse<ProductListResponse>, void>({
-      query: () => 'products',
-      providesTags: ['Product'],
-    }),
+   getProducts: builder.query<ProductsResponse, void>({
+  query: () => 'products',
+  providesTags: ['Product'],
+}),
+
 
     // GET single product by ID
-    getProductById: builder.query<ApiResponse<Product>, any>({
+    getProductById: builder.query<any, any>({
       query: (productId) => `products/${productId}`,
       providesTags:['Product'],
     }),
 
     // CREATE a new product
-    createProduct: builder.mutation<ApiResponse<Product>, CreateProductRequest>({
+    createProduct: builder.mutation<any, CreateProductRequest>({
       query: (newProduct) => ({
         url: 'products',
         method: 'POST',
@@ -89,6 +89,15 @@ export const sokoLinkApi = createApi({
         url: 'admin/login',
         method: 'POST',
         body: adminLogin,
+      }),
+    }),
+    
+    // 👇 NEW: Retailer/Wholesaler Login
+    retailerWholesalerLogin: builder.mutation<any, any>({
+      query: (loginData) => ({
+        url: 'login', // Your endpoint is /login
+        method: 'POST',
+        body: loginData,
       }),
     }),
 
@@ -192,5 +201,5 @@ export const {
   useGetRetailersQuery,
   useGetAdminProductsQuery, useRegisterWholesalerMutation,
   useRegisterRetailerMutation,
-  useRegisterCustomerMutation
+  useRegisterCustomerMutation,useRetailerWholesalerLoginMutation
 } = sokoLinkApi;
