@@ -17,6 +17,8 @@ import AllUsers from './pages/admin/AllUsers';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import WholesalerDashboard from './pages/Wholesaler/WholesalerDashboard';
+import AddProduct from './pages/Wholesaler/AddProduct';
+import MyProducts from './pages/Wholesaler/MyProducts';
 
 const App: React.FC = () => {
   return (
@@ -46,6 +48,8 @@ const App: React.FC = () => {
 
         {/* Wholesaler Routes */}
         <Route path="/wholesaler" element={<WholesalerDashboard />} />
+        <Route path="/wholesaler/addproduct" element={<AddProduct />} />
+        <Route path='/wholesaler/products' element={<MyProducts />} />
       </Routes>
     </Router>
   );

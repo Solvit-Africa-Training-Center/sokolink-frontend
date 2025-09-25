@@ -1,31 +1,37 @@
 import React from "react";
 
-const TopProducts: React.FC = () => {
-  const products = [
-    { product: "Samsung Galaxy A54", sold: 145, revenue: "Frw 2,000,000", img: "https://via.placeholder.com/40" },
-    { product: "NutriBullet Blender", sold: 30, revenue: "Frw 20,000,000", img: "https://via.placeholder.com/40" },
-    { product: "HP Pavilion Laptop", sold: 100, revenue: "Frw 30,000,000", img: "https://via.placeholder.com/40" },
-    { product: "Nike Air Force 1 Sneakers", sold: 60, revenue: "Frw 3,000,000", img: "https://via.placeholder.com/40" },
-  ];
+type Product = {
+  name: string;
+  sold: number;
+  revenue: string;
+  stock?: number;
+};
 
+const products: Product[] = [
+  { name: "Samsung Galaxy A54", sold: 45, revenue: "Rwf 2,400,000", stock: 23 },
+  { name: "iPhone 13 Pro", sold: 35, revenue: "Rwf 2,400,000", stock: 8 },
+  { name: "MacBook Pro 14\"", sold: 12, revenue: "Rwf 40,000,000", stock: 5 },
+];
+
+const TopProducts: React.FC = () => {
   return (
-    <div className="bg-white p-4 rounded-xl shadow">
-      <div className="flex justify-between mb-4">
-        <h3 className="font-bold">Top Performing Products</h3>
+    <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-semibold">Top Selling Products</h2>
         <a href="#" className="text-sm text-teal-600">View All</a>
       </div>
-      {products.map((p, i) => (
-        <div key={i} className="flex items-center justify-between p-3 border-b last:border-0">
-          <div className="flex items-center gap-3">
-            <img src={p.img} alt={p.product} className="w-10 h-10 rounded"/>
+
+      <div className="space-y-3">
+        {products.map((p) => (
+          <div key={p.name} className="rounded-lg bg-[#f7fffb] p-3 flex items-center justify-between">
             <div>
-              <p className="font-semibold">{p.product}</p>
-              <p className="text-sm text-gray-500">{p.sold} units sold</p>
+              <div className="font-medium">{p.name}</div>
+              <div className="text-xs text-gray-400">{p.sold} sold · {p.revenue}</div>
             </div>
+            <div className="text-xs px-2 py-1 rounded-full bg-red-50 text-red-600">{p.stock} in stock</div>
           </div>
-          <p className="font-semibold">{p.revenue}</p>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

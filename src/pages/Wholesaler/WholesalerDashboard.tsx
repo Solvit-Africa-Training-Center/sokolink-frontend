@@ -1,48 +1,48 @@
 import React from "react";
-import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
-import StatsCard from "./StatsCard";
-import RecentOrders from "./RecentOrders";
-import RecentProducts from "./RecentProducts";
-import SalesTrends from "./SalesTrends";
-import TopProducts from "./TopProducts";
+import Sidebar from "../../pages/Wholesaler/Sidebar";
+import Topbar from "../../pages/Wholesaler/Topbar";
+import StatsCard from "../../pages/Wholesaler/Statcard";
+import RecentOrders from "../../pages/Wholesaler/RecentOrders";
+import TopProducts from "../../pages/Wholesaler/TopProducts";
+import MonthlySalesTrends from "../../pages/Wholesaler/MonthlySales";
+import TopPerformingProducts from "../../pages/Wholesaler/TopPerfomingProducts";
+import LowStockAlerts from "../../pages/Wholesaler/LowStockAlerts";
+import Footer from "../../components/Footer";
 
 const WholesalerDashboard: React.FC = () => {
-  const stats = [
-    { label: "Total Revenue", value: "Rwf 2,450,000", change: "+12.5%", icon: "$" },
-    { label: "Total Orders", value: "1,247", change: "+8.3%", icon: "🛒" },
-    { label: "Total Customers", value: "892", change: "+15.2%", icon: "👥" },
-    { label: "Avg Order Value", value: "Rwf 2500", change: "-2.1%", icon: "📦" },
-  ];
-
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex">
       <Sidebar />
-      <main className="flex-1 p-6 space-y-6">
-        <Topbar />
+      <main className="ml-64 w-full min-h-screen bg-[#eaf6f4]">
+        <div className="max-w-7xl mx-auto p-6">
+          <Topbar />
 
-        <div>
-          <h2 className="text-xl font-bold">Welcome back, TechWorld Distributors!</h2>
-          <p className="text-gray-500">Manage your wholesale business and track your sales performance</p>
-        </div>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <StatsCard label="Total Revenue" value="Rwf 2,450,000" delta="+12.5%" />
+            <StatsCard label="Total Orders" value="1,247" delta="+8.3%" />
+            <StatsCard label="Total Customers" value="892" delta="+15.2%" />
+            <StatsCard label="Avg Order Value" value="Rwf 2500" delta="-2.1%" />
+          </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-6">
-          {stats.map((s, i) => (
-            <StatsCard key={i} {...s} />
-          ))}
-        </div>
+          {/* Orders + Products */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <RecentOrders />
+            <TopProducts />
+          </div>
 
-        {/* Recent Orders + Recent Products */}
-        <div className="grid grid-cols-2 gap-6">
-          <RecentOrders />
-          <RecentProducts />
-        </div>
+          {/* Trends + Top Performing */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <MonthlySalesTrends />
+            <TopPerformingProducts />
+          </div>
 
-        {/* Sales Trends + Top Products */}
-        <div className="grid grid-cols-2 gap-6">
-          <SalesTrends />
-          <TopProducts />
+          {/* Low Stock */}
+          <div className="mb-6">
+            <LowStockAlerts />
+          </div>
+
+          <Footer />
         </div>
       </main>
     </div>
