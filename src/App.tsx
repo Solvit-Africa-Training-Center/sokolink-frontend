@@ -1,4 +1,5 @@
 // src/App.tsx
+<<<<<<< HEAD
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
@@ -31,11 +32,34 @@ import AddToCart from "./pages/retailer/AddToCart";
 import { Analytics as AnalyticsPage } from "./pages/retailer/Analytics";
 import Profile from "./pages/retailer/Profile";
 import Notifications from "./pages/retailer/Notifications";
+=======
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ForgotPassword from './pages/Forgotpassword';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Help from './pages/Help';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import Overview from './pages/admin/Overview';
+import Reports from './pages/admin/Reports';
+import Analytics from './pages/admin/Analytics';
+import Users from './pages/admin/Users';
+import AllUsers from './pages/admin/AllUsers';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
+import WholesalerDashboard from './pages/Wholesaler/WholesalerDashboard';
+import AddProduct from './pages/Wholesaler/AddProduct';
+import MyProducts from './pages/Wholesaler/MyProducts';
+>>>>>>> 68ab2aede03df6d797d82f851804add6bbdbb81d
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -46,6 +70,7 @@ const App: React.FC = () => {
         <Route path="/help" element={<Help />} />
         <Route path="/products" element={<Products />} />
         <Route path="/productdetail/:id" element={<ProductDetail />} />
+<<<<<<< HEAD
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route
           path="/admin"
@@ -55,11 +80,17 @@ const App: React.FC = () => {
             </PrivateRoute>
           }
         >
+=======
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminDashboard />}>
+>>>>>>> 68ab2aede03df6d797d82f851804add6bbdbb81d
           <Route index element={<Overview />} />
           <Route path="reports" element={<Reports />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="users" element={<Users />}>
             <Route index element={<AllUsers />} />
+<<<<<<< HEAD
             <Route path="retailers" element={<Retailers />} />
           </Route>
 
@@ -78,6 +109,15 @@ const App: React.FC = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>
+=======
+          </Route>
+        </Route>
+
+        {/* Wholesaler Routes */}
+        <Route path="/wholesaler" element={<WholesalerDashboard />} />
+        <Route path="/wholesaler/addproduct" element={<AddProduct />} />
+        <Route path='/wholesaler/products' element={<MyProducts />} />
+>>>>>>> 68ab2aede03df6d797d82f851804add6bbdbb81d
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useGetProductsQuery } from '../services/api/sokoLinkApi';
-import {  Heart, ShoppingCartIcon, StarIcon } from 'lucide-react';
+import { Heart, ShoppingCartIcon, StarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 
@@ -37,11 +37,11 @@ interface ApiResponse {
 }
 
 function Products() {
-    const { data: productsResponse, isLoading, isError, isSuccess } = useGetProductsQuery(undefined, {
-        refetchOnFocus: false,
-        refetchOnReconnect: false,
-        refetchOnMountOrArgChange: false,
-    });
+  const { data: productsResponse, isLoading, isError, isSuccess } = useGetProductsQuery(undefined, {
+    refetchOnFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMountOrArgChange: false,
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -56,10 +56,10 @@ function Products() {
   // Filter products based on criteria
   const filteredProducts = productsResponse?.data?.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
-    const matchesLocation = true; 
-    
+    const matchesLocation = true;
+
     return matchesSearch && matchesPrice && matchesLocation;
   });
 
@@ -120,7 +120,7 @@ function Products() {
           <div className="md:w-80 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold mb-4">Filters</h2>
-              
+
               {/* Search */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -164,7 +164,7 @@ function Products() {
                     <input
                       type="number"
                       value={priceRange.min}
-                      onChange={(e) => setPriceRange({...priceRange, min: Number(e.target.value)})}
+                      onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
@@ -173,7 +173,7 @@ function Products() {
                     <input
                       type="number"
                       value={priceRange.max}
-                      onChange={(e) => setPriceRange({...priceRange, max: Number(e.target.value)})}
+                      onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
@@ -289,7 +289,7 @@ function Products() {
                           className="flex-1 flex bg-[#008994] items-center justify-center gap-1 text-white py-2 px-4 rounded hover:bg-transparent transition-colors text-sm border border-[#008994] hover:text-[#008994]"
                           disabled={!product.isAvailable || product.stock === 0}
                         >
-                          <span> Add to cart</span> <ShoppingCartIcon size={20}/>
+                          <span> Add to cart</span> <ShoppingCartIcon size={20} />
                         </button>
                       </div>
                     </div>
@@ -302,7 +302,7 @@ function Products() {
             {filteredProducts?.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-gray-600 text-lg">No products match your filters</p>
-                <button 
+                <button
                   onClick={() => {
                     setSearchTerm('');
                     setPriceRange({ min: 0, max: 1000000 });
@@ -317,7 +317,7 @@ function Products() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
