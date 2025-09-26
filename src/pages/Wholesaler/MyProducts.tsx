@@ -69,7 +69,7 @@ const ProductsPage: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-[#eaf6f4]">
       <Sidebar />
-      <div className="flex-1 space-x-6 ml-66gi p-6">
+      <div className="flex-1 space-x-6 ml-66 p-6">
         <Topbar />
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">Products</h1>
