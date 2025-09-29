@@ -3,6 +3,10 @@ import React from 'react';
 import { TrendingUp, ShoppingCart, Package, Users, Bell, ArrowRight, Calendar } from 'lucide-react';
 
 const Dashboard = () => {
+
+    const userInfo = JSON.parse(localStorage.getItem('retailerAuthData') || '{}');
+    const userName = userInfo.user.name;
+    console.log(userInfo);
     // Mock data
     const salesData = [
         { month: 'Jan', orders: 30 },
@@ -50,7 +54,7 @@ const Dashboard = () => {
         <div className="min-h-screen bg-gray-50 p-6">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Sarah's Store!</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, { userName}'s Store!</h1>
                 <p className="text-gray-600 text-lg">Manage your retail business and explore wholesale opportunities</p>
             </div>
 
