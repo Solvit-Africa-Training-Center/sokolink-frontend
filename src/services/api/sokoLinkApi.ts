@@ -1,7 +1,6 @@
 // services/api/sokoLinkApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type {
-  CreateProductRequest,
   ProductsResponse,
   AdminLoginRequest,
   AdminLoginResponse,WholesalerRegisterRequest,WholesalerRegisterResponse,
@@ -35,6 +34,45 @@ export interface Product {
   expiredAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+export interface ProductVariation {
+  size?: string;
+  color?: string;
+  weight?: string;
+}
+
+// Server response product
+
+
+export interface ProductListResponse {
+  products: Product[];
+  total: number;
+}
+
+// ============================
+// Requests
+// ============================
+
+// Base interface without images to avoid conflict
+interface ProductBaseInput {
+  name: string;
+  description?: string;
+  price: number;
+  stock: number;
+  category: string;
+  variation?: ProductVariation;
+  expiredAt?: string;
+}
+
+// Create Product request (frontend → backend)
+export interface CreateProductRequest extends ProductBaseInput {
+  images: File[];  // files when creating
+}
+
+// Update Product request
+export interface UpdateProductRequest extends Partial<ProductBaseInput> {
+  id: string;
+  images?: File[]; // optional files when updating
 }
 
 // Response when fetching all products
@@ -75,14 +113,37 @@ export const sokoLinkApi = createApi({
     }),
 
     // CREATE a new product
-    createProduct: builder.mutation<any, CreateProductRequest>({
-      query: (newProduct) => ({
-        url: 'products',
-        method: 'POST',
-        body: newProduct,
-      }),
-      invalidatesTags: ['Product'],
-    }),
+   createProduct: builder.mutation<Product, CreateProductRequest>({
+  query: (newProduct: CreateProductRequest) => {
+    const formData = new FormData();
+
+    // Append primitive fields
+    formData.append("name", newProduct.name);
+    formData.append("price", newProduct.price.toString());
+    formData.append("stock", newProduct.stock.toString());
+    formData.append("category", newProduct.category);
+    
+    if (newProduct.description) formData.append("description", newProduct.description);
+    if (newProduct.variation) formData.append("variation", JSON.stringify(newProduct.variation));
+    if (newProduct.expiredAt) formData.append("expiredAt", newProduct.expiredAt);
+
+    // Append files
+    newProduct.images.forEach((file: File) => {
+      formData.append("images", file);
+    });
+
+    return {
+      url: "products",
+      method: "POST",
+      body: formData,
+      // Add FormData headers
+      headers: {
+        // Let the browser set the correct Content-Type with boundary
+      },
+    };
+  },
+  invalidatesTags: ["Product"],
+}),
 
     adminLogin: builder.mutation<AdminLoginResponse<User>, AdminLoginRequest>({
       query: (adminLogin) => ({
@@ -136,6 +197,7 @@ export const sokoLinkApi = createApi({
     getAdminProducts: builder.query<AdminProductsResponse, void>({
   query: () => "admin/products",
     }),
+
     // api/productsApi.ts (inside endpoints)
 registerWholesaler: builder.mutation<
   WholesalerRegisterResponse,

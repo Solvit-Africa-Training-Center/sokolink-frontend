@@ -89,7 +89,7 @@ const Login: React.FC = () => {
         if (roleName === 'retailer') {
           console.log('➡️ Redirecting to Retailer Dashboard');
           dispatch(setRetailerCredentials({ user: userData, token }));
-          navigate('/retailer/dashboard', { replace: true });
+          navigate('/retailerdashboard', { replace: true });
         } else if (roleName === 'wholesaler') {
           console.log('➡️ Redirecting to Wholesaler Dashboard');
           dispatch(setWholesalerCredentials({ user: userData, token }));
